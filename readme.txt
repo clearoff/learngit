@@ -6,3 +6,4 @@ HELLO GIT.
 hehe.
 git tracks changes.
 込込込込込込込込
+Creating a new branch is quick.
