@@ -1,64 +1,66 @@
 #include <iostream>
+
 using namespace std;
 
-class Date
-{
-private:
-	int m_year;
-	int m_month;
-	int m_day;
-public:
-	Date(int _year=1990,int _month=3, int _day=24)
-		:m_day(_day)
-		, m_month(_month)
-		, m_year(_year)
-	{
-		cout << "Date()" << endl;
-	}
-	//~Date()
-	//{
-	//  cout<<
-	//}
-	void Show() const
-	{
-		cout << m_year << "-" << m_month << "-" << m_day << endl;
-	}
-	friend Date operator+(Date _Date1,Date& _Date2);
-	friend ostream& operator<<(ostream &os, const Date& _date);
-	friend void operator>>(istream &is, Date &_date);
-};
- Date operator+(Date _Date1, Date& _Date2)
-{
-	Date _Date;
-	_Date.m_day = _Date1.m_day + _Date2.m_day;
-	_Date.m_month = _Date1.m_month + _Date2.m_month+_Date.m_day/31;
-	_Date.m_year = _Date1.m_year + _Date2.m_year + _Date.m_month / 12;
-	_Date.m_day = _Date.m_day % 31;
-	_Date.m_month = _Date.m_month % 12;
-	return  _Date;
-}
-ostream& operator<<(ostream &os, const Date& _date)
- {
-	 os << _date.m_year << "-" << _date.m_month << "-" << _date.m_day << endl;
-	 return os;
- }
-void operator>>(istream &is, Date &_date)
-{
-	is >> _date.m_year >> _date.m_month >> _date.m_day;
-}
-int main()
-{
-	//Date date1;
-	//date1.Show();
-	//Date date2(2000, 10, 22);
-	//date2.Show();
-	//Date date = date1 + date2;
-	//date.Show();
-	Date date;
-	Date date1(2000,1,1);
-	cout<<date<<date1<<endl;
-	cin >> date;
-	cout << date;
-	return 0;
-}
+//int main()
+//{
+//	int num = 10;
+//	int *pNum = &num;
+//    int &refnum = *pNum;;
+//	cout << "num:" << num << endl;
+//	cout << "refnum:" << refnum << endl;
+//	int num1 = 20;
+//	pNum = &num1;
+//	cout << "num1:" << num1 << endl;
+//	cout << "refnum:" << refnum << endl;            //改变了指针变量的指向  依然不能改变refnum是num引用的事实
+//	return 0;
+//}
 
+//int main()
+//{
+//	int Num = 10;
+//	const int &refNum = Num;
+//    cout << "Num:" << Num << endl;
+//    cout << "refNum:" << refNum << endl;
+//	//refNum = 20;                                  //错误的代码  不能向常量的引用赋值
+//	cout << "Num:" << Num << endl;
+//	cout << "refNum:" << refNum << endl;
+//	return 0;
+//}
+
+
+//void Cube(int &ra)
+//{
+//	
+//}
+//int main()
+//{
+//	int a = 3;
+//	Cube(a+3);             //错误传参   非常量引用的 初始值必须为左值
+//	cout << a << endl;
+//}
+
+
+
+//关于函数形参为const引用类型的临时变量是否创建的问题
+//void Swap(const long int &a, const long int &b)
+//{
+//	//int tmp;
+//	//tmp = (int)a;
+//	//(long int)a = (int)b;
+//	//(long int)b = tmp;
+//}
+//
+//
+//int main()
+//{
+//    int num1 = 2;
+//    int num2 = 3;            //传参时创建临时变量
+//      long int num3=2;       //传参时不创建临时变量
+//	cout << "num1:" << num1 << endl;
+//	cout << "num2:" << num2 << endl;
+//	Swap(num1, num2);
+//	cout << "Swap;;num1:" << num1 << endl;
+//	cout << "Swap;;num2:" << num2 << endl;
+//	return 0;
+//}
