@@ -1,6 +1,6 @@
-#include <iostream>
-
-using namespace std;
+//#include <iostream>
+//
+//using namespace std;
 
 //int main()
 //{
@@ -64,3 +64,90 @@ using namespace std;
 //	cout << "Swap;;num2:" << num2 << endl;
 //	return 0;
 //}
+
+
+//#include <iostream>
+//
+//using namespace std;
+//class Time
+//{
+//
+//};
+//
+//int main()
+//{
+//	Time time;
+//	cout<<sizeof(time)<<endl;
+//	return 0;
+//}
+
+
+#include <iostream>
+
+using namespace std;
+
+class Date
+{
+private:
+	int m_month;
+	int m_year;
+	int m_day;
+public:
+	void Display()
+	{
+		cout << "Year:" << m_year << " Month:" << m_month << " Day:" << m_day << endl;
+	}
+	//Date(int _year,int _month,int _day)       //构造函数没有返回值类型
+	//{                                         //相当于带有默认参数的构造函数           
+	//	S_year = _year;
+	//	S_day = _day;
+	//	S_month = _month;
+	//}
+	//Date()
+	//{
+	//	S_year = 2000;
+	//	S_day = 01;
+	//	S_month = 01;
+	//}
+	Date(int _year = 2000, int _month = 01, int _day = 01)       //构造函数没有返回值类型
+		:m_year(_year)
+		, m_month(_month)
+		, m_day(_day)
+	{                                                
+		//m_year = _year;
+		//m_day = _day;
+		//m_month = _month;
+	}
+	Date(const Date &_date)             //拷贝构造函数
+	{
+		m_year = _date.m_year;
+		m_day = _date.m_day;
+		m_month = _date.m_month;
+	}
+	bool operator==(const Date & _date)       //等号运算符重载
+	{
+		return (m_day == _date.m_day) && (m_year == _date.m_year) && (m_month == _date.m_month);
+	}
+	Date& operator=(const Date& date)         //赋值运算符重载
+	{
+		this->m_year = date.m_year;
+		this->m_month = date.m_month;
+		this->m_day = date.m_day;
+		return *this;
+	}
+};
+int main()
+{
+	Date date;
+	Date date1(date);                //利用拷贝构造函数来创建对象
+	Date date2(2015, 01, 01);
+	date.Display();
+	date1.Display();
+	date2.Display();
+	cout << date.operator==(date1) << endl;
+	cout << (date == date1) << endl;
+	date=date1 = date2;
+	date1.Display();
+	date.Display();
+	return 0;
+}
