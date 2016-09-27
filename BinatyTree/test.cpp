@@ -7,6 +7,7 @@ int main()
 	BinaryTree<int> t1(array,sizeof(array)/sizeof(array[0]),'#');
 	t1.PrevOrder();
 	t1.InOrder();
+	t1.InOrdefNR();
 	t1.PostOrder();
 	t1.LevelOrder();
 	cout << (t1.Depth())<<endl;
@@ -15,6 +16,10 @@ int main()
 	BinaryTree<int> t2(t1);
 	cout << "t2:" << endl;
 	t2.PrevOrder();
+	t2.PrevOrdefNR();
 	t2.PostOrder();
+	t2.PostOrderNR();
+	cout << t2.Find(6)->_Data<<endl;
+	cout << t2.FindKLevel(3) << endl;
 	return 0;
 }

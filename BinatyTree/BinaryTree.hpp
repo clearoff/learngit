@@ -3,6 +3,7 @@
 using namespace std;
 #include <assert.h>
 #include <queue>
+#include <stack>
 
 template<class T>
 struct BinaryTreeNode
@@ -32,6 +33,7 @@ public:
 		:_root(NULL)
 		//, _index(0)
 	{}
+
 	BinaryTree(const T* str,size_t size,const T& invaild)
 		//:_index(0)
 	{
@@ -39,32 +41,119 @@ public:
 		size_t index = 0;
 		_root=_CreateBinaryTree(str,size,invaild,index);          //前序创建二叉树
 	}
+
 	~BinaryTree()
 	{
 		_Destroy(_root);
 	}
+
 	BinaryTree(const BinaryTree<T>& BT)
 	{
 		_root=_Copy(BT._root);
 	}
+
+	size_t FindKLevel(size_t k)                              //找到第K层的节点数
+	{
+		assert(k > 0);
+		assert(k <= Depth());
+		size_t count = k - 1;
+		return _FindKLevel(_root, count);
+	}
+
 	void PrevOrder()                                        //前序遍历二叉树
 	{ 
 		assert(_root);
 		_PreOrder(_root);
 		cout << endl;
 	}
+
 	void InOrder()
 	{
 		assert(_root);
 		_InOrder(_root);
 		cout << endl;
 	}
+
+	void PrevOrdefNR()
+	{
+		stack<Node*> s;
+		Node* cur = _root;
+
+		while (cur||!s.empty())
+		{
+			while (cur)
+			{
+				cout << cur->_Data << " ";
+				s.push(cur);
+				cur = cur->_Left;
+			}
+
+			Node* top = s.top();
+			s.pop();
+
+			cur = top->_Right;
+		}
+		cout << endl;
+	}
+
+	void InOrdefNR()
+	{
+		stack<Node*> s;
+		Node* cur = _root;
+
+		while (cur || !s.empty())
+		{
+			while (cur)
+			{
+				s.push(cur);
+				cur = cur->_Left;
+			}
+
+			Node* top = s.top();
+			s.pop();
+			cout << top->_Data << " ";
+
+			cur = top->_Right;
+		}
+		cout << endl;
+	}
+
+	void PostOrderNR()
+	{
+		stack<Node*> s;
+		Node* cur = _root;
+		Node* Prev=NULL;           //右子树访问标志位
+		while (cur || !s.empty())
+		{
+			while (cur)              //左子树入栈，直到左子树遇到空节点
+			{
+				s.push(cur);
+				cur = cur->_Left;
+			}
+
+			cur = s.top();      //遇到左子树为空，退回到上一节点
+			if (cur->_Right == NULL || cur->_Right == Prev)
+			{
+				cout << cur->_Data << " ";
+				Prev = cur;
+				s.pop();
+				cur = NULL;
+			}
+			else
+			{
+				cur = cur->_Right;
+			}
+		}
+		cout << endl;
+	}
+
 	void PostOrder()
 	{
 		assert(_root);
 		_PostOrder(_root);
 		cout << endl;
 	}
+
 	void LevelOrder()   //层序遍历
 	{
 		queue<Node*> q1;
@@ -84,19 +173,60 @@ public:
 		}
 		cout << endl;
 	}
+
 	size_t Depth()        //二叉树的深度
 	{
 			return _Depth(_root);
 	}
+
 	size_t Size()         //二叉树结点个数
 	{
 		return _Size(_root);
 	}
+
 	size_t LeafSize()     //叶子节点个数
 	{
 		return _LeafSize(_root);
 	}
+
+	Node* Find(const T& x)
+	{
+		return _Find(_root, x);
+	}
 protected:
+	size_t _FindKLevel(Node* root,size_t count)
+	{
+		if (count == 0 && root != NULL)
+		{
+			return 1;
+		}
+		if (count != 0 && root != NULL)
+		{
+			return  _FindKLevel(root->_Left,count-1) +
+				_FindKLevel(root->_Right, count-1) ;
+		}
+		return 0;
+	}
+
+	Node* _Find(Node* root, const T& x)
+	{
+		if (root == NULL)
+			return root;
+		else if (root->_Data != x)
+		{
+			Node* tmp = tmp = _Find(root->_Left, x);
+			if (tmp == NULL)    //如果左子树没有找到则访问右子树
+			{
+				tmp = _Find(root->_Right, x);
+			}
+			return tmp;
+		}
+		else
+		{
+			return root;
+		}
+	}
+
 	void _Destory(Node* root)
 	{
 		if (root == NULL)
