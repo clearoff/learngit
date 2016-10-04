@@ -74,7 +74,27 @@ public:
 		cout << endl;
 	}
 
-	void PrevOrdefNR()
+	void PrevOrderNR()
+	{
+		Node* cur = _root;
+		stack<Node*>   s;
+		if (cur != NULL)
+		{
+			s.push(cur);
+			while (!s.empty())
+			{
+				Node* top = s.top();  
+				cout << top->_Data << " ";             //访问当前节点
+				s.pop();
+				if (top->_Right)
+					s.push(top->_Right);
+				if (top->_Left)
+					s.push(top->_Left);
+			}
+		}
+	}
+
+	/*void PrevOrderfNR()
 	{
 		stack<Node*> s;
 		Node* cur = _root;
@@ -95,28 +115,57 @@ public:
 		}
 		cout << endl;
 	}
+*/
+	//void InOrderNR()
+	//{
+	//	stack<Node*> s;
+	//	Node* cur = _root;
 
-	void InOrdefNR()
-	{
-		stack<Node*> s;
-		Node* cur = _root;
+	//	while (cur || !s.empty())
+	//	{
+	//		while (cur)
+	//		{
+	//			s.push(cur);
+	//			cur = cur->_Left;
+	//		}
 
-		while (cur || !s.empty())
-		{
-			while (cur)
-			{
-				s.push(cur);
-				cur = cur->_Left;
-			}
+	//		Node* top = s.top();
+	//		s.pop();
+	//		cout << top->_Data << " ";
 
-			Node* top = s.top();
-			s.pop();
-			cout << top->_Data << " ";
+	//		cur = top->_Right;
+	//	}
+	//	cout << endl;
+	//}
 
-			cur = top->_Right;
-		}
-		cout << endl;
-	}
+	///*void PostOrderNR()
+	//{
+	//	Node* cur = _root;
+	//	stack<Node*> s;
+	//	Node* Prev = NULL;
+	//	while (cur)
+	//	{
+	//		while (cur->_Left)
+	//		{
+	//			s.push(cur);
+	//			cur = cur->_Left;
+	//		}
+	//		while (cur->_Right==NULL || cur->_Right == Prev)
+	//		{
+	//			cout << cur->_Data << " ";
+	//			Prev = cur;
+
+	//			if (s.empty())
+	//				return;
+
+	//			cur = s.top();
+	//			s.pop();
+	//		}
+	//		s.push(cur);
+	//		cur = cur->_Right;
+	//	}
+	//	cout << endl;*/
+	//}
 
 	void PostOrderNR()
 	{
@@ -172,6 +221,40 @@ public:
 			q1.pop();
 		}
 		cout << endl;
+	}
+
+	void MorrisInorder()
+	{
+		Node* cur = _root;
+		Node* tmp = NULL;
+		while (cur)
+		{
+			if (!cur->_Left)
+			{
+				cout << cur->_Data << " ";
+				cur = cur->_Right;
+			}
+			else
+			{
+				tmp = cur->_Left;
+				while (tmp->_Right&&tmp->_Right != cur)
+				{
+					tmp = tmp->_Right;                //找到左子树中最右边的节点
+				}
+
+				if (tmp->_Right == NULL)
+				{
+					tmp->_Right = cur;
+					cur = cur->_Left;
+				}
+				else
+				{
+					cout << cur->_Data << " ";
+					tmp->_Right = NULL;
+					cur = cur->_Right;
+				}
+			}
+		}
 	}
 
 	size_t Depth()        //二叉树的深度
