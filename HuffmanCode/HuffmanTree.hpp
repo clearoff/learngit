@@ -32,7 +32,7 @@ struct HuffmanTreeNode
 
 
 //HuffmanTree
-template<class T,class Compare>
+template<class T>
 class HuffmanTree
 {
 	typedef HuffmanTreeNode<T> Node;
@@ -41,7 +41,7 @@ public:
 		:_root(NULL)
 	{}
 
-	HuffmanTree(T* a, size_t size)
+	HuffmanTree(T* a, size_t size,T& invaild)
 	{
 		//建HuffmanTree节点的最小堆
 		struct NodeLess
@@ -56,8 +56,12 @@ public:
 		Heap<Node*,NodeLess> minHeap;
 		for (size_t i = 0; i < size; i++)
 		{
-			Node* NewNode = new Node(a[i]);
-			minHeap.Push(NewNode);            //向堆中push HuffmanTree的节点
+			if (a[i] != invaild)
+			{
+				Node* NewNode = new Node(a[i]);
+				minHeap.Push(NewNode);            //向堆中push HuffmanTree的节点
+			}
+
 		}
 
 		//构造HuffmanTree
@@ -78,6 +82,10 @@ public:
 		}
 	}
 
+	Node* ReturnRoot()
+	{
+		return _root;
+	}
 
 	//析构函数
 	~HuffmanTree()
