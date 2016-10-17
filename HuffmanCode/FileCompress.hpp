@@ -149,12 +149,13 @@ public:
 		assert(fin);
 		Node* root = Tree.ReturnRoot();
 		Node* cur = root;
+		size_t count = root->_Weight._count;
 
 	    char ch = fgetc(fout);
 		int pos = 7;
 		char value = 0;
 		value = (ch>>pos) & 1;                               //取ch的最高位
-		while (ch != EOF)
+		while (ch != EOF&&(count!=0))
 		{
 
 			if (value == 0)                          //读到的字符是‘0’ 往哈夫曼树的左边走
@@ -175,6 +176,7 @@ public:
 				cur->_Right == NULL)                   //向文件中写入字符的条件
 			{
 				fputc((cur->_Weight._ch), fin);
+				count--;
 				cur = root;
 			}
 
