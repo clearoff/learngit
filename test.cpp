@@ -1,68 +1,153 @@
-#include "Heap.hpp"
-#include <iostream>
+//#include <iostream>
+//using namespace std;
+//#include <boost\shared_ptr.hpp>
+//using namespace boost;
+////#include <memory>
+//
+//struct ListNode
+//{
+//	shared_ptr<ListNode> next;
+//	shared_ptr<ListNode> prev;
+//
+//	ListNode(const int& a)
+//		:_a(a)
+//	{}
+//
+//	int _a;
+//
+//	~ListNode()
+//	{
+//		cout << "~ListNode()" << endl;
+//	}
+//};
+//
+//void Test()
+//{
+//	shared_ptr<ListNode> p1(new ListNode(5));
+//	shared_ptr<ListNode> p2(new ListNode(6));
+//
+//	p1->next = p2;
+//	p2->prev = p1;
+//
+//
+//}
+//
+//int main()
+//{
+//	//shared_ptr<int> p1(new int(5));
+//	//int *q = p1.get();
+//	//cout << *q << endl;
+//	//delete q;            //p1所指向的内存也被释放，并且指向一块随机值
+//
+//	//unique_ptr<int> p2 = new int(5);      //error 
+//	//unique_ptr<int> p2(new int(5));
+//	////unique_ptr<int> p3(p2);              //error unique_ptr不支持拷贝构造和运算符重载
+//	////unique_ptr<int> p3 = p2;
+//	//p2.release();
+//	/*Test();*/
+//	int a = 5;
+//	shared_ptr<int> p1(&a);
+//	shared_ptr<int> p2(&a);
+//
+//	return 0;
+//}
+
+
+//
+//#include<iostream>
+//using namespace std;
+//
+//class A
+//{
+//public:
+//	A()
+//		:_a(10)
+//	{}
+//protected:
+//	int _a;
+//};
+//
+//class B :public A
+//{
+//public :
+//	B()
+//		:_b(5)
+//	{}
+//protected:
+//	int _b;
+//};
+//
+//template<class Base=A,class Derive=B>
+//bool IsDerived(const Base* a, const Derive* b)
+//{
+//	Derive* c;
+//	c=dynamic_cast<Derive>(a);
+//	if (c == NULL)
+//	{
+//		return false;
+//	}
+//	else
+//		return true;
+//}
+//
+//int main()
+//{
+//	A a;
+//	B b;
+//	cout<<IsDerived(&a,&b)<<endl;
+//	return 0;
+//}
+
+//判断一个类能否被另一个类继承
+#include<iostream>
 using namespace std;
 
-void AdjustDown(int* a, size_t size, size_t parent);    //向下调整算法
-
-
-void HeapSort(int* a,size_t size)         //堆排序
+class A
 {
+public:
+	A()
+		:_a(10)
+	{}
+protected:
+	int _a;
+};
 
-	//建堆
-	for (int i = (size - 2) / 2; i >= 0; i--)
-	{
-		AdjustDown(a, size, i);
-	}
-
-	//进行排序
-	for (size_t i = size - 1; i >= 1; i--)
-	{
-		swap(a[0], a[i]);                  //将最大的元素移到堆得末尾
-		AdjustDown(a, i-1, 0);             //把最大元素除开对堆顶进行向下调整
-	}
-}
-
-void AdjustDown(int* a,size_t size,size_t parent)    //向下调整算法
+class B :public A
 {
-	size_t child = parent*2+1;           //得到左孩子下标
+public:
+	B()
+		:_b(20)
+	{}
+protected:
+	int _b;
+};
 
-	while (child < size)                //向下调整到左孩子越界即可停止
+template<typename Derive, typename Base> 
+class TIsDerived
+{
+public:
+	static int t(Base* base)
 	{
-		if (((child + 1)<size) &&
-			a[child + 1]>a[child])
-		{
-			child++;
-		}
-
-		if (a[parent] < a[child])
-		{
-			swap(a[child], a[parent]);
-			parent = child;
-			child = parent * 2 + 1;
-		}
-		else
-			break;
+		return 1;
 	}
-}
+	static  char t(void* t2)
+	{
+		return 0;
+	}
+
+	static bool IsDerive()
+	{
+		/*bool Result = (sizeof(int) == sizeof(t((Derive*)NULL)));*/
+		bool Result = (sizeof(int) == sizeof(t(new Derive())));
+		return Result;
+	};
+};
 
 
 int main()
 {
-	int a[] = { 10, 11, 13, 12, 16, 18, 15, 17, 14, 19 };
-	//Heap<int,Less<int>> hp1(a,sizeof(a)/sizeof(a[0]));
-	for (int i = 0; i < sizeof(a) / sizeof(a[0]); i++)
-	{
-		cout << a[i] << " ";
-	}
-	cout << endl;
-	HeapSort(a, sizeof(a) / sizeof(a[0]));
-
-	for (int i = 0; i < sizeof(a) / sizeof(a[0]); i++)
-	{
-		cout << a[i] << " ";
-	}
-	cout << endl;
-	//hp1.Push(30);
-	//hp1.Pop();
+	bool   AISDerviedFromB;
+	AISDerviedFromB= TIsDerived<B, A>::IsDerive();
+	cout << AISDerviedFromB << endl;
 	return 0;
 }
